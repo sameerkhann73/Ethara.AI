@@ -24,7 +24,7 @@ const io = initSocket(server);
 
 export { io };
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
 
 async function main() {
     try {

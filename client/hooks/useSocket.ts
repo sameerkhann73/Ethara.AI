@@ -13,7 +13,7 @@ export const useSocket = () => {
 
         // Connect to backend
         // In dev: http://localhost:4000. In prod: relative or env var
-        const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+        const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
         socket = io(socketUrl, {
             withCredentials: true,

@@ -36,7 +36,7 @@ A production-ready full-stack task manager application with real-time collaborat
 
 Create `.env` in `server/`:
 ```
-PORT=4000
+PORT=3001
 CLIENT_URL=http://localhost:3000
 SUPABASE_URL=your_supabase_url
 SUPABASE_JWT_SECRET=your_jwt_secret
@@ -47,7 +47,7 @@ Create `.env.local` in `client/`:
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
 ### 2. Database Setup
