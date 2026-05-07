@@ -1,6 +1,6 @@
-# Collaborative Task Manager
+# Ethara.Ai - Collaborative Task Manager
 
-A production-ready full-stack task manager application with real-time collaboration features.
+A production-ready full-stack task manager application with real-time collaboration features, built with Next.js and Supabase.
 
 ## Tech Stack
 

@@ -1,5 +1,5 @@
 {
-    "name": "server",
+    "name": "ethara-ai-server",
     "version": "1.0.0",
     "main": "dist/server.js",
     "scripts": {

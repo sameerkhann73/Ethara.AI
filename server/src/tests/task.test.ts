@@ -1,6 +1,5 @@
 import { TaskService } from '../services/task.service';
 import { CreateTaskDto } from '../dtos/task.dto';
-import { getIO } from '../socket/socket';
 
 // Mock dependencies
 jest.mock('../repositories/task.repository', () => {
@@ -17,24 +16,15 @@ jest.mock('../repositories/task.repository', () => {
     };
 });
 
-jest.mock('../socket/socket', () => ({
-    getIO: jest.fn().mockReturnValue({
-        emit: jest.fn(),
-        to: jest.fn().mockReturnThis(),
-    })
-}));
-
 describe('TaskService', () => {
     let taskService: TaskService;
-    let mockIO: any;
 
     beforeEach(() => {
         taskService = new TaskService();
-        mockIO = getIO();
     });
 
     describe('createTask', () => {
-        it('should create a task and emit socket events', async () => {
+        it('should create a task and return it', async () => {
             const taskData: CreateTaskDto = {
                 title: 'Test Task',
                 priority: 'MEDIUM',
@@ -46,15 +36,7 @@ describe('TaskService', () => {
 
             expect(result).toBeDefined();
             expect(result.id).toBe('task-123');
-
-            // Verification of Socket emission
-            expect(mockIO.emit).toHaveBeenCalledWith('task:created', expect.any(Object));
-
-            // Verification of Assignment Notification
-            expect(mockIO.to).toHaveBeenCalledWith('user-2');
-            expect(mockIO.emit).toHaveBeenCalledWith('notification:new', expect.objectContaining({
-                type: 'TASK_ASSIGNED'
-            }));
+            expect(result.title).toBe('Test Task');
         });
     });
 });

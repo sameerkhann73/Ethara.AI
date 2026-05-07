@@ -12,7 +12,9 @@ export class TaskRepository {
                 priority: taskData.priority,
                 status: taskData.status,
                 creator_id: taskData.creatorId,
-                assigned_to_id: taskData.assignedToId
+                assigned_to_id: taskData.assignedToId,
+                project_id: taskData.projectId,
+                tags: taskData.tags || []
             })
             .select()
             .single();
@@ -21,19 +23,11 @@ export class TaskRepository {
         return data;
     }
 
-    async findAll(filters: { creatorId?: string; assignedToId?: string; status?: string; priority?: string }) { // Simplified filters for MVP
+    async findAll(filters: { creatorId?: string; assignedToId?: string; status?: string; priority?: string }) {
         let query = supabase.from('tasks').select('*');
-
-        // Currently fetching all tasks relevant to user (created or assigned) if generic filter
-        // Or applying specific filters
-
-        // NOTE: For a real app, complex filtering logic would be here.
-        // For now, let's allow fetching by generic options.
 
         if (filters.status) query = query.eq('status', filters.status);
         if (filters.priority) query = query.eq('priority', filters.priority);
-
-        // If strict creator/assignee filtering is requested (e.g. "My Tasks")
         if (filters.creatorId) query = query.eq('creator_id', filters.creatorId);
         if (filters.assignedToId) query = query.eq('assigned_to_id', filters.assignedToId);
 
@@ -54,16 +48,21 @@ export class TaskRepository {
     }
 
     async update(id: string, updates: UpdateTaskDto) {
+        // Map camelCase to snake_case and include tags
+        const payload: any = {
+            title: updates.title,
+            description: updates.description,
+            priority: updates.priority,
+            status: updates.status,
+            tags: updates.tags
+        };
+
+        if (updates.dueDate !== undefined) payload.due_date = updates.dueDate;
+        if (updates.assignedToId !== undefined) payload.assigned_to_id = updates.assignedToId;
+
         const { data, error } = await supabase
             .from('tasks')
-            .update({
-                title: updates.title,
-                description: updates.description,
-                due_date: updates.dueDate,
-                priority: updates.priority,
-                status: updates.status,
-                assigned_to_id: updates.assignedToId
-            }) // Map camelCase to snake_case manually or use a helper
+            .update(payload)
             .eq('id', id)
             .select()
             .single();

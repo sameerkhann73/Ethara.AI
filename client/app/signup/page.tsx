@@ -36,14 +36,16 @@ export default function SignupPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-            <div className="w-full max-w-md space-y-8 rounded-lg border bg-white p-6 shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden p-4">
+            <div className="absolute inset-0 bg-black/10 dark:bg-black/40"></div>
+
+            <div className="relative z-10 w-full max-w-md space-y-8 rounded-2xl bg-white/95 p-8 shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-xl dark:bg-gray-900/95 dark:border-gray-700">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                         Create an account
                     </h2>
                     <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        Get started with Task Manager
+                        Get started with Ethara.Ai
                     </p>
                 </div>
 

@@ -31,10 +31,7 @@ export default function ProfilePage() {
         }
     }, [profile, setValue]);
 
-    console.log('ProfilePage rendering. User:', user, 'Loading:', loading, 'Profile:', profile);
-
-    if (loading || isProfileLoading) return <div>Loading...</div>;
-    // if (isError) return <div>Error loading profile</div>;
+    if (loading || isProfileLoading) return <div className="flex min-h-screen items-center justify-center text-slate-900 font-bold">Loading...</div>;
 
     if (!user) {
         if (typeof window !== 'undefined') router.push('/login');
@@ -46,36 +43,46 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-white">
             <Navbar />
             <Sidebar />
             <main className="pt-20 lg:pl-[270px] pr-6 pb-6">
-                <div className="max-w-xl mx-auto p-6 bg-card rounded-lg shadow border border-border">
-                    <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+                <div className="max-w-xl mx-auto p-8 border-2 border-gray-200 rounded-xl bg-white shadow-sm">
+                    <h1 className="text-2xl font-black text-slate-900 mb-8 uppercase tracking-tight italic underline decoration-4 decoration-primary/20">USER PROFILE</h1>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" value={user.email} disabled />
-                            <p className="text-xs text-muted-foreground">Email cannot be changed.</p>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        <div className="space-y-1">
+                            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-gray-500">Email Address</Label>
+                            <Input id="email" value={user.email} disabled className="bg-gray-100 border-2 font-bold text-slate-900" />
+                            <p className="text-[10px] text-gray-400 font-medium">Your email is managed by your account provider.</p>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Display Name</Label>
-                            <Input id="name" {...register('name')} placeholder="John Doe" />
+                        <div className="space-y-1">
+                            <Label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-gray-500">Display Name</Label>
+                            <Input id="name" {...register('name')} placeholder="Your Full Name" className="border-2 font-bold text-slate-900" />
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="avatar_url">Avatar URL</Label>
-                            <Input id="avatar_url" {...register('avatar_url')} placeholder="https://example.com/avatar.jpg" />
+                        <div className="space-y-1">
+                            <Label htmlFor="avatar_url" className="text-xs font-bold uppercase tracking-widest text-gray-500">Avatar URL</Label>
+                            <Input id="avatar_url" {...register('avatar_url')} placeholder="https://example.com/photo.jpg" className="border-2 font-bold text-slate-900" />
                         </div>
 
-                        <Button type="submit" disabled={updateMutation.isPending}>
-                            {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
-                        </Button>
+                        <div className="pt-4">
+                            <Button type="submit" disabled={updateMutation.isPending} className="w-full font-bold uppercase tracking-widest">
+                                {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                            </Button>
+                        </div>
 
-                        {updateMutation.isSuccess && <p className="text-green-500 text-sm">Profile updated successfully!</p>}
-                        {updateMutation.isError && <p className="text-red-500 text-sm">Failed to update profile.</p>}
+                        {updateMutation.isSuccess && (
+                            <div className="p-4 border-2 border-green-200 bg-green-50 text-green-700 rounded text-xs font-bold uppercase tracking-widest text-center">
+                                Profile updated successfully!
+                            </div>
+                        )}
+                        {updateMutation.isError && (
+                            <div className="p-4 border-2 border-red-200 bg-red-50 text-red-700 rounded text-xs font-bold uppercase tracking-widest text-center">
+                                Failed to update profile.
+                            </div>
+                        )}
                     </form>
                 </div>
             </main>

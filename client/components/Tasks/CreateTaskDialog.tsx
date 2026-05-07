@@ -5,23 +5,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from '@/components/ui/button';
 import { TaskForm } from './TaskForm';
 import { useCreateTask } from '@/hooks/useTasks';
-import { useAllUsers } from '@/hooks/useUser';
+import { useProject } from '@/hooks/useProjects';
+import { Plus } from 'lucide-react';
 
-export function CreateTaskDialog() {
+export function CreateTaskDialog({ projectId }: { projectId: string }) {
     const [open, setOpen] = useState(false);
     const createTaskMutation = useCreateTask();
-    const { data: users } = useAllUsers();
+    const { data: project } = useProject(projectId);
 
     const handleSubmit = async (data: any) => {
-        console.log('[CreateTaskDialog] Raw Form Data:', data);
-        // Ensure dueDate is ISO if present
         const payload = {
             ...data,
             dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : null,
-            assignedToId: data.assignedTo || null
+            projectId: projectId
         };
-
-        console.log('[CreateTaskDialog] Payload to Server:', payload);
 
         await createTaskMutation.mutateAsync(payload);
         setOpen(false);
@@ -30,13 +27,20 @@ export function CreateTaskDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>Create Task</Button>
+                <Button className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Create Task
+                </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>Create New Task</DialogTitle>
                 </DialogHeader>
-                <TaskForm onSubmit={handleSubmit} isLoading={createTaskMutation.isPending} users={users} />
+                <TaskForm 
+                    onSubmit={handleSubmit} 
+                    isLoading={createTaskMutation.isPending} 
+                    users={project?.project_members || []} 
+                />
             </DialogContent>
         </Dialog>
     );
